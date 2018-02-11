@@ -51,3 +51,17 @@ class TestObserver(unittest.TestCase):
         """
         # point = Observer("Tallin", -5, 12)
         # self.assertEqual(point.get_forecast("api key goes here", 200))
+
+    def test_check_location_exists_true(self):
+        """this is a place holder test to be run with real api key.
+        I won't write it now to avoid api key ending to Github.
+        """
+        # point = Observer("Paris", -2, 11)
+        # self.assertTrue(point.check_location_exists("api key here"))
+
+    def test_check_location_exists_false(self):
+        """this is a place holder test to be run with real api key.
+        I won't write it now to avoid api key ending to Github.
+        """
+        # point = Observer("qwert123", -2, 11)
+        # self.assertFalse(point.check_location_exists("api key here"))

@@ -2,6 +2,7 @@
 import requests
 import json
 
+
 class Observer():
     """Observation point and related limits.
     init arguments:
@@ -34,3 +35,18 @@ class Observer():
             self.forecasts = data["list"]
 
         return response.status_code
+
+    def check_location_exists(self, api_key):
+        """checks if a location exists in OpenWeatherMap
+        arguments:
+        api_key - api_key for OpenWeatherMap
+        """
+        baseurl = "http://api.openweathermap.org/data/2.5/forecast/" \
+                  "daily?q=%s&cnt=5&units=metric&APPID=%s"
+        url = baseurl % (self.name, api_key)
+
+        response = requests.get(url)
+        if response.status_code == 404:
+            return False
+        else:
+            return True
