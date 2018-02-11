@@ -29,9 +29,11 @@ class TestObserver(unittest.TestCase):
             Observer(max_temp=30, min_temp=-30)
 
     def test_to_string(self):
+        """tests the __str__ method"""
         point = Observer("Lodz", max_temp=15, min_temp=-22)
         self.assertEqual(str(point), "Lodz: Min alert: -22, Max alert: 15")
 
     def test_create_with_empty_forecasts(self):
+        """tests that each instance is created with self.forecasts = None"""
         point = Observer("new york", -5, 5)
         self.assertIsNone(point.forecasts)
