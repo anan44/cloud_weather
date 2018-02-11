@@ -27,3 +27,11 @@ class TestObserver(unittest.TestCase):
         """tests the creation of an Observer without name"""
         with self.assertRaises(TypeError):
             Observer(max_temp=30, min_temp=-30)
+
+    def test_to_string(self):
+        point = Observer("Lodz", max_temp=15, min_temp=-22)
+        self.assertEqual(str(point), "Lodz: Min alert: -22, Max alert: 15")
+
+    def test_create_with_empty_forecasts(self):
+        point = Observer("new york", -5, 5)
+        self.assertIsNone(point.forecasts)
