@@ -37,3 +37,17 @@ class TestObserver(unittest.TestCase):
         """tests that each instance is created with self.forecasts = None"""
         point = Observer("new york", -5, 5)
         self.assertIsNone(point.forecasts)
+
+    def test_get_forecast_with_wrong_api_key(self):
+        """tests that status code 401 is returned when polling API with
+        incorrect apikey
+        """
+        point = Observer("Stockholm", -10, 22)
+        self.assertEqual(point.get_forecast("qwerty"), 401)
+
+    def test_get_forecast(self):
+        """this is a place holder test to be run with real api key.
+        I won't write it now to avoid api key ending to Github.
+        """
+        # point = Observer("Tallin", -5, 12)
+        # self.assertEqual(point.get_forecast("api key goes here", 200))
