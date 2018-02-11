@@ -1,0 +1,22 @@
+{
+    "locations": [
+        {"name": "Vantaa",
+         "low_limit": 0,
+         "high_limit": 25
+        },
+        {"name": "London",
+         "low_limit": -10,
+         "high_limit": 28
+        },
+        {"name": "Berlin",
+         "low_limit": -8,
+         "high_limit": 32
+        },
+        {"name": "Turenki",
+         "low_limit": -1,
+         "high_limit": 15
+        }
+    ],
+    "polling_interval_in_minutes": 5,
+    "api_key": "qwerty123"
+}
