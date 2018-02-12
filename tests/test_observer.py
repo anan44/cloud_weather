@@ -1,8 +1,11 @@
 """Contains tests for observer package"""
 import unittest
+import re
+from os import remove
 
 from weather.observer import Observer
 from weather.observer import ingestor
+from weather.observer import log_forecasts
 
 
 class TestObserver(unittest.TestCase):
@@ -71,18 +74,11 @@ class TestObserver(unittest.TestCase):
         """Tests the form of get_log_data string."""
         point = Observer("Vantaa", 0, 25)
         point.forecasts = [{'dt': 1518429600,
-                            'temp': {'day': -2,
-                                     'min': -2.35,
-                                     'max': -2,
-                                     'night': -2.35,
-                                     'eve': -2,
-                                     'morn': -2}},
+                            'temp': {'day': -2, 'min': -2.35, 'max': -2,
+                                     'night': -2.35, 'eve': -2, 'morn': -2}},
                            {'dt': 1518516000,
-                            'temp': {'day': -1.3,
-                                     'min': -2.13,
-                                     'max': -0.5,
-                                     'night': -1.48,
-                                     'eve': -0.86,
+                            'temp': {'day': -1.3, 'min': -2.13, 'max': -0.5,
+                                     'night': -1.48, 'eve': -0.86,
                                      'morn': -2.02}}]
 
         self.assertTrue("Vantaa" in point.get_log_data())
@@ -105,7 +101,7 @@ class TestObserverUtils(unittest.TestCase):
         self.assertEqual(locations[0].max_temp, 4)
 
     def test_ingestor_multiple_locations(self):
-        """Test the successful use of ingestor with multiple inputs."""
+        """Tests the successful use of ingestor with multiple inputs."""
         json_dict = [{"name": "Copenhagen",
                       "low_limit": -2,
                       "high_limit": 4},
@@ -124,9 +120,42 @@ class TestObserverUtils(unittest.TestCase):
         self.assertEqual(locations[2].max_temp, 22)
 
     def test_ingestor_corrupted_input(self):
-        """Test the failed use of ingestor with corrupted input data."""
+        """Tests the failed use of ingestor with corrupted input data."""
         json_dict = [{"value": "Tallin",
                       "low_limit": 5,
                       "high_limit": 11}]
         with self.assertRaises(KeyError):
             ingestor(json_dict)
+
+    def test_log_forecasts_no_alerts(self):
+        """Tests that log_forecasts is able to append log as intended"""
+        point1 = Observer("Tokyo", -19, 10)
+        point1.forecasts = [{'dt': 1518429600,
+                            'temp': {'day': -2, 'min': -2.35, 'max': -2,
+                                     'night': -2.35, 'eve': -2, 'morn': -2}},
+                            {'dt': 1518516000,
+                             'temp': {'day': -1.3, 'min': -2.13, 'max': -0.5,
+                                      'night': -1.48, 'eve': -0.86,
+                                      'morn': -2.02}}]
+        point2 = Observer("Warsaw", -22, 16)
+        point2.forecasts = [{'dt': 1518429600,
+                            'temp': {'day': 4, 'min': 2.55, 'max': 5,
+                                     'night': 2.35, 'eve': 3, 'morn': 2}},
+                            {'dt': 1518516000,
+                             'temp': {'day': 0.3, 'min': 2.13, 'max': 0.8,
+                                      'night': 4, 'eve': 0.86, 'morn': 2.02}}]
+        locations = [point1, point2]
+        log_forecasts(locations, "./logs/test_log.txt")
+        with open("./logs/test_log.txt", "r") as log_file:
+            log_lines = log_file.readlines()
+        result = re.search(r"(Polled at: \d\d\.\d\d\.\d{4} \d\d:\d\d:\d\d)",
+                           log_lines[0])
+        self.assertTrue(bool(result))
+        self.assertEqual("Tokyo\n", log_lines[1])
+        self.assertEqual("Warsaw\n", log_lines[6])
+        self.assertEqual("\t12.02.2018\n", log_lines[2])
+        self.assertEqual("\t13.02.2018\n", log_lines[4])
+        self.assertEqual("\t\tday: -2; min: -2.35; max: -2;\n", log_lines[3])
+        self.assertEqual("\t\tday: -1.3; min: -2.13; max: -0.5;\n",
+                         log_lines[5])
+        remove("./logs/test_log.txt")

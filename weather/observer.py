@@ -79,3 +79,20 @@ def ingestor(locations):
                  for loc in locations]
 
     return observers
+
+
+def log_forecasts(locations, log_path):
+    """Takes a list of locations and appends their forecasts to log file.
+    arguments:
+    locations - list of observer objects
+    log_path - path to the logfile
+    """
+    entry = "Polled at: "
+    entry += datetime.fromtimestamp(time.time()).strftime("%d.%m.%Y %H:%M:%S")
+    entry += "\n"
+
+    for loc in locations:
+        entry += loc.get_log_data()
+    entry += "-" * 45 + "\n"
+    with open(log_path, "a") as output:
+        output.write(entry)
