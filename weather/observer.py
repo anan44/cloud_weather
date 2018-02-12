@@ -1,6 +1,8 @@
 """Contains Observer class and related functionalities"""
 import requests
 import json
+import time
+from datetime import datetime
 
 
 class Observer():
@@ -55,6 +57,8 @@ class Observer():
 def ingestor(locations):
     """Turns a list of locations and limit temperaturs to a list of Observers
     required list format is as follows: name, min_temp, max_temp
+    arguments:
+    locations - list of observer objects
     """
     observers = [Observer(loc["name"], loc["low_limit"], loc["high_limit"])
                  for loc in locations]
