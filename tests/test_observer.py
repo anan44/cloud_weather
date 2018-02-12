@@ -67,6 +67,29 @@ class TestObserver(unittest.TestCase):
         # point = Observer("qwert123", -2, 11)
         # self.assertFalse(point.check_location_exists("api key here"))
 
+    def test_get_log_data_format(self):
+        """Tests the form of get_log_data string."""
+        point = Observer("Vantaa", 0, 25)
+        point.forecasts = [{'dt': 1518429600,
+                            'temp': {'day': -2,
+                                     'min': -2.35,
+                                     'max': -2,
+                                     'night': -2.35,
+                                     'eve': -2,
+                                     'morn': -2}},
+                           {'dt': 1518516000,
+                            'temp': {'day': -1.3,
+                                     'min': -2.13,
+                                     'max': -0.5,
+                                     'night': -1.48,
+                                     'eve': -0.86,
+                                     'morn': -2.02}}]
+
+        self.assertTrue("Vantaa" in point.get_log_data())
+        self.assertTrue("12.02.2018" in point.get_log_data())
+        self.assertTrue("13.02.2018" in point.get_log_data())
+        self.assertTrue("day: -2; min: -2.35; max: -2" in point.get_log_data())
+
 
 class TestObserverUtils(unittest.TestCase):
     """Tests for the utility functions in observer package."""

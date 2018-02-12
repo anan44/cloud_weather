@@ -7,7 +7,7 @@ from datetime import datetime
 
 class Observer():
     """Observation point and related limits.
-    init arguments:
+    Init arguments:
     name - name of the location
     min_temp = lower temperature limit for alarms
     max_temp = higher temperature limit for alarms
@@ -23,8 +23,8 @@ class Observer():
                                                      self.max_temp)
 
     def get_forecast(self, api_key):
-        """requests for weather data from OpenWeatherMap API
-        arguments:
+        """Requests for weather data from OpenWeatherMap API.
+        Arguments:
         api_key - api_key for OpenWeatherMap
         """
         baseurl = "http://api.openweathermap.org/data/2.5/forecast/" \
@@ -39,8 +39,8 @@ class Observer():
         return response.status_code
 
     def check_location_exists(self, api_key):
-        """checks if a location exists in OpenWeatherMap
-        arguments:
+        """Checks if a location exists in OpenWeatherMap.
+        Arguments:
         api_key - api_key for OpenWeatherMap
         """
         baseurl = "http://api.openweathermap.org/data/2.5/forecast/" \
@@ -53,10 +53,25 @@ class Observer():
         else:
             return True
 
+    def get_log_data(self):
+        """Gets loggable string from forecast data.
+        No arguments.
+        """
+        log_entry = self.name + "\n"
+        for i in range(len(self.forecasts)):
+            timestamp = self.forecasts[i]["dt"]
+            temp = self.forecasts[i]["temp"]
+            date = datetime.fromtimestamp(timestamp).strftime("%d.%m.%Y")
+            weather = "\t\tday: %s; min: %s; max: %s;\n" % (temp["day"],
+                                                            temp["min"],
+                                                            temp["max"])
+            log_entry += "\t%s\n%s" % (date, weather)
+        return log_entry
+
 
 def ingestor(locations):
     """Turns a list of locations and limit temperaturs to a list of Observers
-    required list format is as follows: name, min_temp, max_temp
+    required list format is as follows: name, min_temp, max_temp.
     arguments:
     locations - list of observer objects
     """
