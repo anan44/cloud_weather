@@ -2,6 +2,7 @@
 import unittest
 
 from weather.observer import Observer
+from weather.observer import ingestor
 
 
 class TestObserver(unittest.TestCase):
@@ -65,3 +66,44 @@ class TestObserver(unittest.TestCase):
         """
         # point = Observer("qwert123", -2, 11)
         # self.assertFalse(point.check_location_exists("api key here"))
+
+
+class TestObserverUtils(unittest.TestCase):
+    """tests for the utility functions in observer package"""
+    def test_ingestor_singe_location(self):
+        """tests the successful use of ingestor"""
+        json_dict = [{"name": "Copenhagen",
+                      "low_limit": -2,
+                      "high_limit": 4}]
+        locations = ingestor(json_dict)
+        self.assertEqual(len(locations), 1)
+        self.assertEqual(locations[0].name, "Copenhagen")
+        self.assertEqual(locations[0].min_temp, -2)
+        self.assertEqual(locations[0].max_temp, 4)
+
+    def test_ingestor_multiple_locations(self):
+        """test the successful use of ingestor with multiple inputs"""
+        json_dict = [{"name": "Copenhagen",
+                      "low_limit": -2,
+                      "high_limit": 4},
+                     {"name": "Helsinki",
+                      "low_limit": -5,
+                      "high_limit": 12},
+                     {"name": "Hong Kong",
+                      "low_limit": 4,
+                      "high_limit": 22}]
+        locations = ingestor(json_dict)
+        self.assertEqual(len(locations), 3)
+        self.assertEqual(locations[0].name, "Copenhagen")
+        self.assertEqual(locations[1].name, "Helsinki")
+        self.assertEqual(locations[2].name, "Hong Kong")
+        self.assertEqual(locations[1].min_temp, -5)
+        self.assertEqual(locations[2].max_temp, 22)
+
+    def test_ingestor_corrupted_input(self):
+        """test the failed use of ingestor with corrupted input data"""
+        json_dict = [{"value": "Tallin",
+                      "low_limit": 5,
+                      "high_limit": 11}]
+        with self.assertRaises(KeyError):
+            ingestor(json_dict)
