@@ -6,6 +6,7 @@ from os import remove
 from weather.observer import Observer
 from weather.observer import ingestor
 from weather.observer import log_forecasts
+from main import read_config
 
 
 class TestObserver(unittest.TestCase):
@@ -53,22 +54,25 @@ class TestObserver(unittest.TestCase):
         """This is a place holder test to be run with real api key.
         I won't write it now to avoid api key ending to Github.
         """
-        # point = Observer("Tallin", -5, 12)
-        # self.assertEqual(point.get_forecast("api key goes here", 200))
+        point = Observer("Talin", -5, 12)
+        api_key = read_config("config.json")["api_key"]
+        self.assertEqual(point.get_forecast(3, api_key), 200)
 
     def test_check_location_exists_true(self):
         """This is a place holder test to be run with real api key.
         I won't write it now to avoid api key ending to Github.
         """
-        # point = Observer("Paris", -2, 11)
-        # self.assertTrue(point.check_location_exists("api key here"))
+        point = Observer("Paris", -2, 11)
+        api_key = read_config("config.json")["api_key"]
+        self.assertTrue(point.check_location_exists(api_key))
 
     def test_check_location_exists_false(self):
         """This is a place holder test to be run with real api key.
         I won't write it now to avoid api key ending to Github.
         """
-        # point = Observer("qwert123", -2, 11)
-        # self.assertFalse(point.check_location_exists("api key here"))
+        point = Observer("qwert123", -2, 11)
+        api_key = read_config("config.json")["api_key"]
+        self.assertFalse(point.check_location_exists(api_key))
 
     def test_get_log_data_format(self):
         """Tests the form of get_log_data string."""
