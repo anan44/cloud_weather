@@ -177,8 +177,8 @@ class TestObserverUtils(unittest.TestCase):
                             {'dt': 1518516000,
                              'temp': {'day': 0.3, 'min': -6, 'max': 7,
                                       'night': 4, 'eve': -5.5, 'morn': 6.02}}]
-        self.assertEqual(point1.get_alarms(0), "Low limit -1 reached;")
-        self.assertEqual(point2.get_alarms(0), "High limit 5 reached;")
-        self.assertEqual(point1.get_alarms(1), "n/a")
-        self.assertEqual(point2.get_alarms(1),
+        self.assertEqual(point1.get_alerts(0), "Low limit -1 reached;")
+        self.assertEqual(point2.get_alerts(0), "High limit 5 reached;")
+        self.assertEqual(point1.get_alerts(1), "n/a")
+        self.assertEqual(point2.get_alerts(1),
                          "Low limit -5 reached;High limit 5 reached;")

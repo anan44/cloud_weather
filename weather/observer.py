@@ -38,7 +38,7 @@ class Observer():
 
         return response.status_code
 
-    def get_alarms(self, day):
+    def get_alerts(self, day):
         """Gets a string of alarms specifying all possible alarms for the given
         day index.
         Arguments:
