@@ -127,12 +127,14 @@ class TestObserverUtils(unittest.TestCase):
         with self.assertRaises(KeyError):
             ingestor(json_dict)
 
-    def test_log_forecasts_no_alerts(self):
-        """Tests that log_forecasts is able to append log as intended"""
-        point1 = Observer("Tokyo", -19, 10)
+    def test_log_forecasts(self):
+        """Tests that log_forecasts and add alarms is able to append log as
+        intended
+        """
+        point1 = Observer("Tokyo", -9, 10)
         point1.forecasts = [{'dt': 1518429600,
-                            'temp': {'day': -2, 'min': -2.35, 'max': -2,
-                                     'night': -2.35, 'eve': -2, 'morn': -2}},
+                            'temp': {'day': -2, 'min': -15, 'max': -2,
+                                     'night': -14.35, 'eve': -2, 'morn': -2}},
                             {'dt': 1518516000,
                              'temp': {'day': -1.3, 'min': -2.13, 'max': -0.5,
                                       'night': -1.48, 'eve': -0.86,
@@ -152,12 +154,14 @@ class TestObserverUtils(unittest.TestCase):
                            log_lines[0])
         self.assertTrue(bool(result))
         self.assertEqual("Tokyo\n", log_lines[1])
-        self.assertEqual("Warsaw\n", log_lines[6])
         self.assertEqual("\t12.02.2018\n", log_lines[2])
-        self.assertEqual("\t13.02.2018\n", log_lines[4])
-        self.assertEqual("\t\tday: -2; min: -2.35; max: -2;\n", log_lines[3])
+        self.assertEqual("\t\tday: -2; min: -15; max: -2;\n", log_lines[3])
+        self.assertEqual("\t\tAlert: Low limit -9 reached;\n", log_lines[4])
+        self.assertEqual("\t13.02.2018\n", log_lines[5])
         self.assertEqual("\t\tday: -1.3; min: -2.13; max: -0.5;\n",
-                         log_lines[5])
+                         log_lines[6])
+        self.assertEqual("Warsaw\n", log_lines[8])
+        self.assertEqual("\t\tAlert: n/a\n", log_lines[14])
         remove("./logs/test_log.txt")
 
     def test_get_alarms(self):

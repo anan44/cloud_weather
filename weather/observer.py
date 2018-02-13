@@ -84,7 +84,8 @@ class Observer():
             weather = "\t\tday: %s; min: %s; max: %s;\n" % (temp["day"],
                                                             temp["min"],
                                                             temp["max"])
-            log_entry += "\t%s\n%s" % (date, weather)
+            alert = "Alert: " + self.get_alerts(i)
+            log_entry += "\t%s\n%s\t\t%s\n" % (date, weather, alert)
         return log_entry
 
 
