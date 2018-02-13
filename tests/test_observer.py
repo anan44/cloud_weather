@@ -47,7 +47,7 @@ class TestObserver(unittest.TestCase):
         incorrect apikey
         """
         point = Observer("Stockholm", -10, 22)
-        self.assertEqual(point.get_forecast("qwerty"), 401)
+        self.assertEqual(point.get_forecast(3, "qwerty"), 401)
 
     def test_get_forecast(self):
         """This is a place holder test to be run with real api key.

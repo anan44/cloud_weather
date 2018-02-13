@@ -22,14 +22,15 @@ class Observer():
         return "%s: Min alert: %s, Max alert: %s" % (self.name, self.min_temp,
                                                      self.max_temp)
 
-    def get_forecast(self, api_key):
+    def get_forecast(self, days, api_key):
         """Requests for weather data from OpenWeatherMap API.
         Arguments:
+        days - number of days to be polled per location
         api_key - api_key for OpenWeatherMap
         """
         baseurl = "http://api.openweathermap.org/data/2.5/forecast/" \
-                  "daily?q=%s&cnt=5&units=metric&APPID=%s"
-        url = baseurl % (self.name, api_key)
+                  "daily?q=%s&cnt=%s&units=metric&APPID=%s"
+        url = baseurl % (self.name, days, api_key)
 
         response = requests.get(url)
         if response.ok:

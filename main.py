@@ -22,6 +22,7 @@ if __name__ == "__main__":
     api_key = config["api_key"]
     locations = ingestor(config["locations"])
     interval = config["polling_interval_in_minutes"] * 60
+    days_checked = config["days_checked"]
 
     error_msg = ("Unable to connect to OpenWeatherMap API. "
                  "Trying again in 60sec......\n"
@@ -43,7 +44,7 @@ if __name__ == "__main__":
     while(True):
         try:
             for loc in locations:
-                loc.get_forecast(api_key)
+                loc.get_forecast(days_checked, api_key)
             log_forecasts(locations, "./logs/weather_log.txt")
             print("Log entry made at %s" %
                   (datetime.now().strftime("%H:%M")))
