@@ -159,3 +159,26 @@ class TestObserverUtils(unittest.TestCase):
         self.assertEqual("\t\tday: -1.3; min: -2.13; max: -0.5;\n",
                          log_lines[5])
         remove("./logs/test_log.txt")
+
+    def test_get_alarms(self):
+        """Tests that get_alarms returns correct string"""
+        point1 = Observer("London", -1, 40)
+        point2 = Observer("Rome", -5, 5)
+        point1.forecasts = [{'dt': 1518429600,
+                            'temp': {'day': -2, 'min': -2.35, 'max': -2,
+                                     'night': -2.35, 'eve': -2, 'morn': -2}},
+                            {'dt': 1518516000,
+                             'temp': {'day': 1.3, 'min': 0.86, 'max': 4.5,
+                                      'night': 1.48, 'eve': 0.86,
+                                      'morn': 2.02}}]
+        point2.forecasts = [{'dt': 1518429600,
+                            'temp': {'day': 4, 'min': 2.55, 'max': 6,
+                                     'night': 2.35, 'eve': 3, 'morn': 2}},
+                            {'dt': 1518516000,
+                             'temp': {'day': 0.3, 'min': -6, 'max': 7,
+                                      'night': 4, 'eve': -5.5, 'morn': 6.02}}]
+        self.assertEqual(point1.get_alarms(0), "Low limit -1 reached;")
+        self.assertEqual(point2.get_alarms(0), "High limit 5 reached;")
+        self.assertEqual(point1.get_alarms(1), "n/a")
+        self.assertEqual(point2.get_alarms(1),
+                         "Low limit -5 reached;High limit 5 reached;")

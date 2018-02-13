@@ -38,6 +38,25 @@ class Observer():
 
         return response.status_code
 
+    def get_alarms(self, day):
+        """Gets a string of alarms specifying all possible alarms for the given
+        day index.
+        Arguments:
+        day - index of the day from forecasts
+        """
+        alarm = ""
+        temp = self.forecasts[day]["temp"]
+        if temp["min"] <= self.min_temp:
+            alarm += "Low limit %s reached;" % (self.min_temp)
+
+        if temp["max"] >= self.max_temp:
+            alarm += "High limit %s reached;" % (self.max_temp)
+
+        if not alarm:
+            return "n/a"
+        else:
+            return alarm
+
     def check_location_exists(self, api_key):
         """Checks if a location exists in OpenWeatherMap.
         Arguments:
