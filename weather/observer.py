@@ -9,8 +9,8 @@ class Observer():
     """Observation point and related limits.
     Init arguments:
     name - name of the location
-    min_temp = lower temperature limit for alarms
-    max_temp = higher temperature limit for alarms
+    min_temp - lower temperature limit for alarms
+    max_temp - higher temperature limit for alarms
     """
     def __init__(self, name, min_temp, max_temp):
         self.name = name
