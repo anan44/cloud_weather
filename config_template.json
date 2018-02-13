@@ -17,7 +17,7 @@
          "high_limit": 15
         }
     ],
-    "polling_interval_in_minutes": 5,
+    "polling_interval_in_minutes": 180,
     "api_key": "Your API key goes here",
     "days_checked": 5
 
