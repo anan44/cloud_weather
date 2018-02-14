@@ -3,6 +3,7 @@ import json
 from time import sleep
 from datetime import datetime
 from requests.exceptions import ConnectionError
+from requests.exceptions import ReadTimeout
 from weather.observer import ingestor
 from weather.observer import log_forecasts
 
@@ -36,7 +37,7 @@ if __name__ == "__main__":
                     print("%s is not available in OpenWeatherMap and it will "
                           "be removed from polling." % (locations.pop(i).name))
             break
-        except ConnectionError:
+        except (ConnectionError, ReadTimeout) as error:
             print(error_msg)
             sleep(60)
 
@@ -50,6 +51,6 @@ if __name__ == "__main__":
                   (datetime.now().strftime("%H:%M")))
             sleep(interval)
 
-        except ConnectionError:
+        except (ConnectionError, ReadTimeout) as error:
             print(error_msg)
             sleep(60)
