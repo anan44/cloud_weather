@@ -1,5 +1,5 @@
 *.swp
 *.pyc
 __pycache__/
-logs/
+logs/weather_log.txt
 config.json
