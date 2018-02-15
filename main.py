@@ -60,6 +60,7 @@ if __name__ == "__main__":
             log_forecasts(locations, "./logs/weather_log.txt")
             print("Log entry made at %s" %
                   (datetime.now().strftime("%H:%M")))
+            print("If you wish to stop press Ctrl + C")
             sleep(interval)
 
         except (ConnectionError, ReadTimeout) as error:
