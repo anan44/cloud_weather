@@ -7,7 +7,8 @@
 * Running tests requires [OpenWeatherMAP](https://openweathermap.org/) API key to be set to file as instructed in How to use section.
 
 ## How to use?
-* Make a copy from config_template.json with the name config.json.
+* Make a COPY from config_template.json with the name config.json.
+    * Do not delete config_template.json. It is required for some of the tests.
 * Fill in the configurations using the same formula as the template file.
 * Add [OpenWeatherMap](https://openweathermap.org/) API key to designated field.
     * API key might take up to 10min to be activate.
@@ -15,6 +16,12 @@
 * Application will ignore locations that are not being supported by OpenWeatherMap.
 * Read results from ./logs/weather_log.txt.
 
+## Running tests
+* The project uses standard unittest package.
+* To run tests run python -m unittest in root directory.
+* As mentioned above running tests requires:
+    * config.json file with valid API key.
+    * Unmodified version of config_template.json at place in root directory.
 
 ## Config fields
 In config file there is few fields which are quite self explanatory. Regardless of that they are also explained below:
