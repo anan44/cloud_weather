@@ -10,6 +10,7 @@
 * Make a copy from config_template.json with the name config.json.
 * Fill in the configurations using the same formula as the template file.
 * Add [OpenWeatherMap](https://openweathermap.org/) API key to designated field.
+    * API key might take up to 10min to be activate.
 * Execute the program by running main.py.
 * Application will ignore locations that are not being supported by OpenWeatherMap
 * Read results from ./logs/weather_log.txt.
