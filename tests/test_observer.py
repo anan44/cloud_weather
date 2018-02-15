@@ -72,6 +72,14 @@ class TestObserver(unittest.TestCase):
         api_key = read_config("config.json")["api_key"]
         self.assertFalse(point.check_location_exists(api_key))
 
+    def test_check_location_exists_invalid_key(self):
+        """Tests that check_location_exists raises ValueError in case of
+        receiving status_code 401
+        """
+        with self.assertRaises(ValueError):
+            point = Observer("Vilnus", -2, 15)
+            point.check_location_exists("wrong key")
+
     def test_get_log_data_format(self):
         """Tests the form of get_log_data string."""
         point = Observer("Vantaa", 0, 25)

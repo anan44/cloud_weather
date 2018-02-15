@@ -14,6 +14,7 @@ def read_config(path):
     path - path to config.json file
     """
     with open(path) as config_file:
+        # TODO raise error for illegal values
         return json.load(config_file)
 
 
@@ -28,7 +29,7 @@ if __name__ == "__main__":
     error_msg = ("Unable to connect to OpenWeatherMap API. "
                  "Trying again in 60sec......\n"
                  "Press Ctrl-C if you wish to terminate.")
-
+    valid_key = False
     # check all locations exist and remove ones that don't
     while(True):
         try:
@@ -36,13 +37,23 @@ if __name__ == "__main__":
                 if not loc.check_location_exists(api_key):
                     print("%s is not available in OpenWeatherMap and it will "
                           "be removed from polling." % (locations.pop(i).name))
+            valid_key = True
             break
         except (ConnectionError, ReadTimeout) as error:
             print(error_msg)
             sleep(60)
+        except ValueError:
+            print("The API key provided was not accepted by the"
+                  "OpenWeatherMap API.\n\n"
+                  "In case you just created the key, it might take up to "
+                  "10min to activate the new key. In such cases please wait "
+                  "patiently and try again in a while.\n\n"
+                  "If this is not the case, please double check the API you "
+                  "have provided.")
+            break
 
     # run forecer check the weather forecasts and writting them to the log
-    while(True):
+    while(valid_key):
         try:
             for loc in locations:
                 loc.get_forecast(days_checked, api_key)

@@ -70,6 +70,8 @@ class Observer():
         response = requests.get(url)
         if response.status_code == 404:
             return False
+        elif response.status_code == 401:
+            raise ValueError("Invalid API key.")
         else:
             return True
 
