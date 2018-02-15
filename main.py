@@ -14,24 +14,35 @@ def read_config(path):
     path - path to config.json file
     """
     with open(path) as config_file:
-        # TODO raise error for illegal values
-        return json.load(config_file)
+        config = json.load(config_file)
+        if not isinstance(config["days_checked"], int):
+            raise ValueError("Illegal days_checked type.")
+        if config["days_checked"] < 1 or config["days_checked"] > 15:
+            raise ValueError("Illegal days_checked value.")
+        return config
 
 
 if __name__ == "__main__":
     # read configurations from config.json
-    config = read_config("config.json")
-    api_key = config["api_key"]
-    locations = ingestor(config["locations"])
-    interval = config["polling_interval_in_minutes"] * 60
-    days_checked = config["days_checked"]
-
-    error_msg = ("Unable to connect to OpenWeatherMap API. "
-                 "Trying again in 60sec......\n"
-                 "Press Ctrl-C if you wish to terminate.")
     valid_key = False
-    # check all locations exist and remove ones that don't
-    while(True):
+    valid_config = False
+    try:
+        config = read_config("config.json")
+        api_key = config["api_key"]
+        locations = ingestor(config["locations"])
+        interval = config["polling_interval_in_minutes"] * 60
+        days_checked = config["days_checked"]
+
+        error_msg = ("Unable to connect to OpenWeatherMap API. "
+                     "Trying again in 60sec......\n"
+                     "Press Ctrl-C if you wish to terminate.")
+        valid_config = True
+    except ValueError as error:
+        print(error)
+        print("\nProcess terminated")
+
+    # check that all locations exist and remove ones that don't
+    while(valid_config):
         try:
             for i, loc in enumerate(locations):
                 if not loc.check_location_exists(api_key):
@@ -52,7 +63,7 @@ if __name__ == "__main__":
                   "have provided.")
             break
 
-    # run forecer check the weather forecasts and writting them to the log
+    # runs forever logging weather forecasts
     while(valid_key):
         try:
             for loc in locations:
@@ -66,3 +77,11 @@ if __name__ == "__main__":
         except (ConnectionError, ReadTimeout) as error:
             print(error_msg)
             sleep(60)
+        except ValueError:
+            print("There is something wrong with your API key.\n\n"
+                  "Please check the validity of your key from the"
+                  "OpenWeatherMap website")
+            break
+        except KeyboardInterrupt:
+            print("\n\nProcess stoped.\n")
+            break
