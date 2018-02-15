@@ -111,12 +111,15 @@ def log_forecasts(locations, log_path):
     locations - list of observer objects
     log_path - path to the logfile
     """
-    entry = "Polled at: "
-    entry += datetime.fromtimestamp(time.time()).strftime("%d.%m.%Y %H:%M:%S")
-    entry += "\n"
-
+    time_now = datetime.fromtimestamp(time.time())
+    time_str = time_now.strftime("%d.%m.%Y %H:%M:%S")
+    line = "-" * 45 + "\n"
+    locs = ""
     for loc in locations:
-        entry += loc.get_log_data()
-    entry += "-" * 45 + "\n"
+        locs += loc.get_log_data()
+
+    entry = ("Polled at: {time_str}\n{locs}"
+             "{line}".format(time_str=time_str, locs=locs, line=line))
+
     with open(log_path, "a") as output:
         output.write(entry)
