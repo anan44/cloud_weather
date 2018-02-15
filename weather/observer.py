@@ -36,7 +36,8 @@ class Observer():
         if response.ok:
             data = json.loads(response.content)
             self.forecasts = data["list"]
-
+        elif response.status_code == 401:
+            raise ValueError("Invalid API key.")
         return response.status_code
 
     def get_alerts(self, day):

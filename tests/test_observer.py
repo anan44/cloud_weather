@@ -44,11 +44,12 @@ class TestObserver(unittest.TestCase):
         self.assertIsNone(point.forecasts)
 
     def test_get_forecast_with_wrong_api_key(self):
-        """Tests that status code 401 is returned when polling API with
+        """Tests that ValueError is raised when polling API with
         incorrect apikey
         """
-        point = Observer("Stockholm", -10, 22)
-        self.assertEqual(point.get_forecast(3, "qwerty"), 401)
+        with self.assertRaises(ValueError):
+            point = Observer("Stockholm", -10, 22)
+            point.get_forecast(1,"wrong key")
 
     def test_get_forecast(self):
         """Tests that get_forcast is able to get reply from API"""
