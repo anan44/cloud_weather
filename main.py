@@ -16,9 +16,11 @@ def read_config(path):
     with open(path) as config_file:
         config = json.load(config_file)
         if not isinstance(config["days_checked"], int):
-            raise ValueError("Illegal days_checked type.")
+            raise ValueError("Illegal days_checked type. "
+                             "Integer value is being expected.")
         if config["days_checked"] < 1 or config["days_checked"] > 15:
-            raise ValueError("Illegal days_checked value.")
+            raise ValueError("Illegal days_checked value. "
+                             "Value has to be in range 1-15.")
         return config
 
 
