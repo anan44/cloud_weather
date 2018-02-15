@@ -22,7 +22,7 @@ In config file there is few fields which are quite self explanatory. Regardless 
 	* name: Name of city to check weather from
 	* low_limit: Low temperature threshold for temperature alerts
 	* high_limit: High temperature threshold for temperature alerts
-* pollin_interval_in_minutes: number of minutes between between queries done to the API
+* pollin_interval_in_minutes: number of minutes between between queries done to the API. There is no hard limit on value, but it is advisable to avoid intervals smaller than 10min
 * api_key: API key to [OpenWeatherMap](https://openweathermap.org/) API. Free keys available from the website
 * days_checked: Number of days check on each round of polling the API. For example input value 5 will check weather for present day following 4 days.
 
