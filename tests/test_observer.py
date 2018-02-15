@@ -49,7 +49,7 @@ class TestObserver(unittest.TestCase):
         """
         with self.assertRaises(ValueError):
             point = Observer("Stockholm", -10, 22)
-            point.get_forecast(1,"wrong key")
+            point.get_forecast(1, "wrong key")
 
     def test_get_forecast(self):
         """Tests that get_forcast is able to get reply from API"""
