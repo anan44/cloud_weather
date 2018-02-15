@@ -51,24 +51,22 @@ class TestObserver(unittest.TestCase):
         self.assertEqual(point.get_forecast(3, "qwerty"), 401)
 
     def test_get_forecast(self):
-        """This is a place holder test to be run with real api key.
-        I won't write it now to avoid api key ending to Github.
-        """
+        """Tests that get_forcast is able to get reply from API"""
         point = Observer("Talin", -5, 12)
         api_key = read_config("config.json")["api_key"]
         self.assertEqual(point.get_forecast(3, api_key), 200)
 
     def test_check_location_exists_true(self):
-        """This is a place holder test to be run with real api key.
-        I won't write it now to avoid api key ending to Github.
+        """Tests that check_location is able to verify that provided location
+        is supported by OpenWeatherMap API
         """
         point = Observer("Paris", -2, 11)
         api_key = read_config("config.json")["api_key"]
         self.assertTrue(point.check_location_exists(api_key))
 
     def test_check_location_exists_false(self):
-        """This is a place holder test to be run with real api key.
-        I won't write it now to avoid api key ending to Github.
+        """Tests that check_location is able to verify that provided location
+        is supported by OpenWeatherMap API
         """
         point = Observer("qwert123", -2, 11)
         api_key = read_config("config.json")["api_key"]
