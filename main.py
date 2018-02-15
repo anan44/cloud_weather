@@ -22,7 +22,8 @@ def read_config(path):
         return config
 
 
-if __name__ == "__main__":
+def main():
+    """Core functionality of the program"""
     # read configurations from config.json
     valid_key = False
     valid_config = False
@@ -85,3 +86,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print("\n\nProcess stoped.\n")
             break
+
+
+if __name__ == "__main__":
+    main()
